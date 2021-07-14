@@ -1,7 +1,6 @@
 package com.sgl.msscbeerservice.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sgl.msscbeerservice.bootstrap.BeerLoader;
 import com.sgl.msscbeerservice.web.model.BeerDto;
 import com.sgl.msscbeerservice.web.model.BeerStyleEnum;
 import org.junit.jupiter.api.Test;
