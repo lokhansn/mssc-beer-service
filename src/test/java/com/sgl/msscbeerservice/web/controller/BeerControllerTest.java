@@ -1,6 +1,7 @@
 package com.sgl.msscbeerservice.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sgl.msscbeerservice.bootstrap.BeerLoader;
 import com.sgl.msscbeerservice.services.BeerService;
 import com.sgl.msscbeerservice.web.model.BeerDto;
 import com.sgl.msscbeerservice.web.model.BeerStyleEnum;
@@ -16,6 +17,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.BDDMockito.given;
+
 @WebMvcTest(BeerController.class)
 class BeerControllerTest {
 
@@ -30,6 +35,8 @@ class BeerControllerTest {
 
     @Test
     void gerBeerById() throws Exception {
+        given(beerService.getById(any())).willReturn(getValidBeerDto());
+
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/beer/" + UUID.randomUUID().toString()).
                 accept(MediaType.APPLICATION_JSON)).
                 andExpect(MockMvcResultMatchers.status().isOk());
@@ -39,6 +46,8 @@ class BeerControllerTest {
     void saveNewBeer() throws Exception {
         BeerDto beerDto = getValidBeerDto();
         String beerDtoJson = objectMapper.writeValueAsString(beerDto);
+
+        given(beerService.saveNewBeer(any())).willReturn(getValidBeerDto());
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/beer/")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -51,13 +60,16 @@ class BeerControllerTest {
         BeerDto beerDto = getValidBeerDto();
         String beerDtoJson = objectMapper.writeValueAsString(beerDto);
 
+        given(beerService.updateBeer(any(), any())).willReturn(getValidBeerDto());
+
+
         mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/beer/" + UUID.randomUUID().toString())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(beerDtoJson))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
-    BeerDto getValidBeerDto(){
+    BeerDto getValidBeerDto() {
         // If we pass id and version the test case will fail as per the requirement
         return BeerDto.builder()
 //                .id(UUID.randomUUID())
@@ -65,7 +77,7 @@ class BeerControllerTest {
                 .beerName("Kingfisher")
                 .beerStyle(BeerStyleEnum.ALE)
                 .price(new BigDecimal("2.99"))
-                .upc(12314L)
+                .upc(BeerLoader.BEER_1_UPC)
                 .build();
     }
 }
