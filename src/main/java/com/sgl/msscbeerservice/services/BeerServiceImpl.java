@@ -8,6 +8,8 @@ import com.sgl.msscbeerservice.web.model.BeerDto;
 import com.sgl.msscbeerservice.web.model.BeerPagedList;
 import com.sgl.msscbeerservice.web.model.BeerStyleEnum;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -18,15 +20,19 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class BeerServiceImpl implements BeerService {
 
     // No need to add Autowired as the with RequiredArgsConstructor spring will take care of autowiring
     private final BeerRepository beerRepository;
     private final BeerMapper beerMapper;
 
+    @Cacheable(cacheNames = "beerListCache", condition = "#showInventoryOnHand == false ")
     @Override
     public BeerPagedList listBeers(String beerName, BeerStyleEnum beerStyle, PageRequest pageRequest, Boolean showInventoryOnHand) {
-
+        if(log.isDebugEnabled()) {
+            log.debug("listBeers is called");
+        }
         BeerPagedList beerPagedList;
         Page<Beer> beerPage;
 
@@ -70,8 +76,12 @@ public class BeerServiceImpl implements BeerService {
         return beerPagedList;
     }
 
+    @Cacheable(cacheNames = "beerCache", key = "#beerId", condition = "#showInventoryOnHand == false")
     @Override
     public BeerDto getById(UUID beerId, Boolean showInventoryOnHand) {
+        if(log.isDebugEnabled()) {
+            log.debug("getById is called");
+        }
         if (showInventoryOnHand) {
             return beerMapper
                     .beerToBeerDtoWithInventory(beerRepository
