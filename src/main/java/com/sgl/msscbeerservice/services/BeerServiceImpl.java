@@ -30,7 +30,7 @@ public class BeerServiceImpl implements BeerService {
     @Cacheable(cacheNames = "beerListCache", condition = "#showInventoryOnHand == false ")
     @Override
     public BeerPagedList listBeers(String beerName, BeerStyleEnum beerStyle, PageRequest pageRequest, Boolean showInventoryOnHand) {
-        if(log.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             log.debug("listBeers is called");
         }
         BeerPagedList beerPagedList;
@@ -49,7 +49,7 @@ public class BeerServiceImpl implements BeerService {
             beerPage = beerRepository.findAll(pageRequest);
         }
 
-        if(showInventoryOnHand){
+        if (showInventoryOnHand) {
             beerPagedList = new BeerPagedList(beerPage
                     .getContent()
                     .stream()
@@ -60,7 +60,7 @@ public class BeerServiceImpl implements BeerService {
                                     beerPage.getPageable().getPageSize()),
                     beerPage.getTotalElements());
 
-        }else {
+        } else {
             beerPagedList = new BeerPagedList(beerPage
                     .getContent()
                     .stream()
@@ -79,7 +79,7 @@ public class BeerServiceImpl implements BeerService {
     @Cacheable(cacheNames = "beerCache", key = "#beerId", condition = "#showInventoryOnHand == false")
     @Override
     public BeerDto getById(UUID beerId, Boolean showInventoryOnHand) {
-        if(log.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             log.debug("getById is called");
         }
         if (showInventoryOnHand) {
@@ -87,7 +87,7 @@ public class BeerServiceImpl implements BeerService {
                     .beerToBeerDtoWithInventory(beerRepository
                             .findById(beerId)
                             .orElseThrow(NotFoundException::new));
-        }else {
+        } else {
             return beerMapper
                     .beerToBeerDto(beerRepository
                             .findById(beerId)
@@ -103,7 +103,7 @@ public class BeerServiceImpl implements BeerService {
 
     @Override
     public BeerDto updateBeer(UUID beerId, BeerDto beerDto) {
-        Beer beer = beerRepository.findById(beerId).orElseThrow(()-> new NotFoundException());
+        Beer beer = beerRepository.findById(beerId).orElseThrow(() -> new NotFoundException());
 
         beer.setBeerName(beerDto.getBeerName());
         beer.setBeerStyle(beerDto.getBeerStyle().toString());
@@ -111,5 +111,12 @@ public class BeerServiceImpl implements BeerService {
         beer.setUpc(beerDto.getUpc());
 
         return beerMapper.beerToBeerDto(beerRepository.save(beer));
+    }
+
+    @Cacheable(cacheNames = "beerUpcCache")
+    @Override
+    public BeerDto getByUpc(String upc) {
+        return beerMapper.beerToBeerDto(beerRepository.findByUpc(upc));
+
     }
 }
