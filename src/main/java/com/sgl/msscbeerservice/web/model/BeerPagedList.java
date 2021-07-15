@@ -11,7 +11,8 @@ import java.io.Serializable;
 import java.util.List;
 
 public class BeerPagedList extends PageImpl<BeerDto> implements Serializable {
-    static final long serialVersionUID = -6605206251405449409L;
+
+    static final long serialVersionUID = 1114715135625836949L;
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public BeerPagedList(@JsonProperty("content") List<BeerDto> content,
@@ -24,6 +25,7 @@ public class BeerPagedList extends PageImpl<BeerDto> implements Serializable {
                          @JsonProperty("sort") JsonNode sort,
                          @JsonProperty("first") boolean first,
                          @JsonProperty("numberOfElements") int numberOfElements) {
+
         super(content, PageRequest.of(number, size), totalElements);
     }
 

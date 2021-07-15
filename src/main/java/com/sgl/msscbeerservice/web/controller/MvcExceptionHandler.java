@@ -13,9 +13,12 @@ import java.util.List;
 public class MvcExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<List> handleException(ConstraintViolationException e) {
-        List<String> errors = new ArrayList<>(e.getConstraintViolations().size());
-        e.getConstraintViolations().forEach(er -> errors.add(er.getMessage()));
-        return new ResponseEntity(errors, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<List> validationErrorHandler(ConstraintViolationException ex) {
+        List<String> errorsList = new ArrayList<>(ex.getConstraintViolations().size());
+
+        ex.getConstraintViolations().forEach(error -> errorsList.add(error.toString()));
+
+        return new ResponseEntity<>(errorsList, HttpStatus.BAD_REQUEST);
     }
+
 }
