@@ -24,8 +24,8 @@ public class BrewingService {
     private final JmsTemplate jmsTemplate;
     private final BeerMapper beerMapper;
 
-    // Keeping it at 10 sec, otherwise there would be too many message will flow
-    @Scheduled(fixedRate = 10000)
+    // Keeping it at 30 sec, otherwise there would be too many message will flow
+    @Scheduled(fixedRate = 30000)
     public void checkForLowInventory(){
         List<Beer> beers = beerRepository.findAll();
 
