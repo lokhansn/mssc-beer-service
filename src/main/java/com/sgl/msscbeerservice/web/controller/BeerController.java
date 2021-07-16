@@ -1,11 +1,10 @@
 package com.sgl.msscbeerservice.web.controller;
 
 import com.sgl.msscbeerservice.services.BeerService;
-import com.sgl.msscbeerservice.web.model.BeerDto;
-import com.sgl.msscbeerservice.web.model.BeerPagedList;
-import com.sgl.msscbeerservice.web.model.BeerStyleEnum;
+import com.sgl.sfg.brewery.model.BeerDto;
+import com.sgl.sfg.brewery.model.BeerPagedList;
+import com.sgl.sfg.brewery.model.BeerStyleEnum;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

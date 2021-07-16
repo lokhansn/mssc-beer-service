@@ -1,4 +1,4 @@
-package com.sgl.msscbeerservice.web.model;
+package com.sgl.sfg.brewery.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BeerDto implements Serializable  {
+public class BeerDto implements Serializable {
 
     static final long serialVersionUID = -5815566940065181210L;
 

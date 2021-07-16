@@ -1,6 +1,6 @@
-package com.sgl.common.events;
+package com.sgl.sfg.brewery.model.events;
 
-import com.sgl.msscbeerservice.web.model.BeerDto;
+import com.sgl.sfg.brewery.model.BeerDto;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor

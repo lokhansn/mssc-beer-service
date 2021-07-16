@@ -37,6 +37,10 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
         <!-- Java 8 date/time type `java.time.OffsetDateTime` not supported by default:
         add Module "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"-->
         <dependency>
